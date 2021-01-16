@@ -12,6 +12,7 @@
     isNormalUser = true;
     shell = "/run/current-system/sw/bin/fish";
     extraGroups = [
+      "video"
       "wheel" # for sudo
     ];
 

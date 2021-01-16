@@ -23,6 +23,7 @@
     file
     fzf
     jq
+    lsof
     tcpdump
     wget
 

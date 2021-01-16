@@ -1,26 +1,34 @@
-{ lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 {
   environment.sessionVariables = {
     XDG_SESSION_TYPE = "wayland";
+    XDG_CURRENT_DESKTOP = "sway";
   };
 
-  environment.systemPackages = with pkgs; [
+  programs.sway.enable = true;
+
+  programs.sway.extraPackages = with pkgs; [
+    dmenu-wayland
+    grim
     i3status # replace this?
+    i3status-rust
     libinput
     mako
-    sway-unwrapped
+    nwg-launchers
+    slurp
     swaybg
     swayidle
     swaylock
+    wf-recorder
     wl-clipboard
-    xwayland
 
     # bemenu dmenu waybar
   ];
 
-  hardware.opengl.enable = lib.mkDefault true;
+  services.pipewire.enable = true;
 
-  programs.dconf.enable = lib.mkDefault true;
-
-  security.pam.services.swaylock = {};
+  xdg.portal.enable = true;
+  xdg.portal.extraPortals = with pkgs; [
+    xdg-desktop-portal-wlr
+  ];
 }

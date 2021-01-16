@@ -2,7 +2,7 @@
   description = "Andy's NixOS Configurations";
 
   inputs.nixpkgs = {
-    url = "nixpkgs/nixos-unstable";
+    url = "github:NixOS/nixpkgs/nixos-unstable";
   };
 
   inputs.nixpkgs-wayland = {

@@ -3,7 +3,7 @@
   # A better console font?
   console.font = lib.mkDefault "${pkgs.terminus_font}/share/consolefonts/ter-u28n.psf.gz";
 
-  # fonts.enableDefaultFonts = lib.mkDefault true;
+  fonts.enableDefaultFonts = false;
 
   fonts.fonts = with pkgs; [
     fira

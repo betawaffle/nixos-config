@@ -1,4 +1,4 @@
-{ ... }:
+{ config, ... }:
 {
   imports = [
     ./cpu.nix
@@ -17,6 +17,12 @@
     ./u2f.nix
     ./users.nix
   ];
+
+  # Enable brightness control for DCC/CI monitors.
+  features.ddcci.enable = true;
+
+  # Enable Video4Linux.
+  features.v4l2.enable = true;
 
   # Needed for zfs. It's just 8 random hex digits.
   networking.hostId = "6bd5a82e";

@@ -8,6 +8,9 @@ let
     # Some useful flake-specific stuff.
     ./modules/flakes.nix
 
+    # Load all the features modules.
+    ./modules/features.nix
+
     # The host's entrypoint module.
     (./hosts + "/${name}/configuration.nix")
   ];

@@ -2,11 +2,11 @@
   "nodes": {
     "cachix": {
       "locked": {
-        "lastModified": 1610411012,
-        "narHash": "sha256-zjh0UuMINNhmyo3M8TEvju4+mo0swRrcKoojr2EH37M=",
+        "lastModified": 1610723013,
+        "narHash": "sha256-9XfSdxWoffmiO8h1j/QlK0aFGhHK1C5jWAQLrEsmCaY=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "aa5b9cd16b91d8a24681c3888951d7c3dc612314",
+        "rev": "97a13fb97fcda79f9ab3ee73b5dca65eb891c11a",
         "type": "github"
       },
       "original": {
@@ -26,9 +26,10 @@
         "type": "github"
       },
       "original": {
-        "id": "nixpkgs",
+        "owner": "NixOS",
         "ref": "nixos-unstable",
-        "type": "indirect"
+        "repo": "nixpkgs",
+        "type": "github"
       }
     },
     "nixpkgs-wayland": {
@@ -40,11 +41,11 @@
         "unstableSmall": "unstableSmall"
       },
       "locked": {
-        "lastModified": 1610449507,
-        "narHash": "sha256-4NTti4aOysaWcMRSYljLTmTirUs6u1EVuWMrEsXfk8A=",
+        "lastModified": 1610794889,
+        "narHash": "sha256-s2DeZRLsVDFAKbN8uMFOYLcNRgXIEJOHoz2SSd9UhVI=",
         "owner": "colemickens",
         "repo": "nixpkgs-wayland",
-        "rev": "a0a5447939de63a94a0928fa22d1a4d501c8307a",
+        "rev": "92e857c7bdb9e820532eff9e5f0d043bd0e699c8",
         "type": "github"
       },
       "original": {
@@ -61,11 +62,11 @@
     },
     "unstableSmall": {
       "locked": {
-        "lastModified": 1610408971,
-        "narHash": "sha256-KwbvDM1wLuNq4+Jc2r808TlMTLalES0hnJQ+7Ythj44=",
+        "lastModified": 1610749131,
+        "narHash": "sha256-B+ZtXdVTkbWb7xUmFRuDjrdtcWiCWKCE3nlFVNdvwRE=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "02828f91f15668ce6a757b6ef1d2d8430a403194",
+        "rev": "b3616bd96400ce0252c241d76fcafb64389defc6",
         "type": "github"
       },
       "original": {
