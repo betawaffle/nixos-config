@@ -16,9 +16,9 @@ in
   };
 
   config = mkIf cfg.enable {
-    boot.extraModprobeConfig = ''
-      options ddcci
-    '';
+    # boot.extraModprobeConfig = ''
+    #   options ddcci
+    # '';
 
     boot.extraModulePackages = with config.boot.kernelPackages; [
       ddcci-driver
