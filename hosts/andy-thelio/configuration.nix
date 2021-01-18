@@ -5,6 +5,7 @@
     ./efi.nix
     ./fonts.nix
     ./fs.nix
+    ./g600.nix
     ./ipfs.nix
     ./linux.nix
     ./misc.nix
