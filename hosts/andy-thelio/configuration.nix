@@ -5,7 +5,6 @@
     ./efi.nix
     ./fonts.nix
     ./fs.nix
-    ./g600.nix
     ./ipfs.nix
     ./linux.nix
     ./misc.nix
@@ -22,7 +21,10 @@
   # Enable brightness control for DCC/CI monitors.
   features.ddcci.enable = true;
 
-  # Enable Video4Linux.
+  # Ability to configure my Logitech G600 mouse.
+  features.g600.enable = true;
+
+  # Enable Video4Linux, which I may use for screen-sharing.
   features.v4l2.enable = true;
 
   # Needed for zfs. It's just 8 random hex digits.

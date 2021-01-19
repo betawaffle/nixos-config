@@ -13,7 +13,7 @@
 
   # Overlay some packages.
   nixpkgs.overlays = [
-    # flakes.nixos-config.overlay
+    flakes.nixos-config.overlay
 
     # flakes.nixos-config.overlays.blender
     # flakes.nixos-config.overlays.kea

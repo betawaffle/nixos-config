@@ -45,4 +45,6 @@ in
   nixosConfigurations = mkHosts [
     { name = "andy-thelio"; }
   ];
+
+  overlay = import ./overlay.nix;
 }

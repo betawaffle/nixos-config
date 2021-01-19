@@ -8,6 +8,7 @@
   programs.sway.enable = true;
 
   programs.sway.extraPackages = with pkgs; [
+    bemenu
     dmenu-wayland
     grim
     i3status # replace this?
