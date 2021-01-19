@@ -14,6 +14,7 @@
     i3status # replace this?
     i3status-rust
     libinput
+    libnotify
     mako
     nwg-launchers
     slurp
