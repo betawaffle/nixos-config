@@ -13,7 +13,8 @@
     shell = "/run/current-system/sw/bin/fish";
     extraGroups = [
       "video"
-      "wheel" # for sudo
+      "wheel"   # for sudo
+      "dialout" # for mdloader
     ];
 
     # Allow me to SSH into this machine, from my other machine(s).
