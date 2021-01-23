@@ -66,6 +66,9 @@
     # For accessing the serial console on my apu2e4.
     picocom
 
+    # For flashing my keyboard firmware.
+    mdloader
+
     # This has something to do with warning messages.
     hicolor-icon-theme
 

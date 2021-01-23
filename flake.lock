@@ -16,6 +16,38 @@
         "type": "github"
       }
     },
+    "libratbag": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1609350232,
+        "narHash": "sha256-LXDoaQP2U8EimgP3XAzRG9oIxMo0wnKgQoDFU41QZsM=",
+        "owner": "libratbag",
+        "repo": "libratbag",
+        "rev": "b3275e10d7eef0eeed2ede40fde6e5c727dce307",
+        "type": "github"
+      },
+      "original": {
+        "owner": "libratbag",
+        "repo": "libratbag",
+        "type": "github"
+      }
+    },
+    "mdloader": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1602023898,
+        "narHash": "sha256-vuoYxeNisU5bQbsNg3yUdGn2LmkxoNY15WH9cBFNt98=",
+        "owner": "Massdrop",
+        "repo": "mdloader",
+        "rev": "9df711a7c2df36ad9efae34fb7302ecbfa49c0a6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Massdrop",
+        "repo": "mdloader",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1610219734,
@@ -56,6 +88,8 @@
     },
     "root": {
       "inputs": {
+        "libratbag": "libratbag",
+        "mdloader": "mdloader",
         "nixpkgs": "nixpkgs",
         "nixpkgs-wayland": "nixpkgs-wayland"
       }
