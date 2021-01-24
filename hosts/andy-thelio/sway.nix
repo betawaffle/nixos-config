@@ -9,7 +9,6 @@
 
   programs.sway.extraPackages = with pkgs; [
     bemenu
-    evtest
     grim
     i3status # replace this?
     i3status-rust

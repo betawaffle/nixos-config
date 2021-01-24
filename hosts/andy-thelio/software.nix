@@ -69,6 +69,10 @@
     # For flashing my keyboard firmware.
     mdloader
 
+    # Misc stuff
+    evtest
+    hid-listen
+
     # This has something to do with warning messages.
     hicolor-icon-theme
 
