@@ -70,6 +70,7 @@
     mdloader
 
     # Misc stuff
+    bluez
     evtest
     hid-listen
 
