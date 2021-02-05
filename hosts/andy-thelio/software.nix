@@ -103,6 +103,9 @@
   # Matt's Traceroute
   programs.mtr.enable = true;
 
+  # Steam
+  programs.steam.enable = true;
+
   # Lorri seems cool, let's try it.
   services.lorri.enable = true;
 
