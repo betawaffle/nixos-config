@@ -107,6 +107,9 @@
   # Steam
   programs.steam.enable = true;
 
+  # Bluetooth
+  services.blueman.enable = true;
+
   # Lorri seems cool, let's try it.
   services.lorri.enable = true;
 
