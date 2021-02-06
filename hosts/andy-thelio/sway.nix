@@ -1,9 +1,11 @@
 { config, lib, pkgs, ... }:
 {
+  /*
   environment.sessionVariables = {
     XDG_SESSION_TYPE = "wayland";
     XDG_CURRENT_DESKTOP = "sway";
   };
+  */
 
   programs.sway.enable = true;
 
@@ -28,8 +30,8 @@
 
   services.pipewire.enable = true;
 
-  xdg.portal.enable = true;
-  xdg.portal.extraPortals = with pkgs; [
-    xdg-desktop-portal-wlr
-  ];
+  # xdg.portal.enable = true;
+  # xdg.portal.extraPortals = with pkgs; [
+  #   xdg-desktop-portal-wlr
+  # ];
 }
