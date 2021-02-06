@@ -7,7 +7,7 @@
 
   config = {
     # Pin flakes to the ones used for building the system.
-    nix.registry = lib.mapAttrs' (name: flake: { inherit name; value.flake = flake; }) flakes;
+    # nix.registry = lib.mapAttrs' (name: flake: { inherit name; value.flake = flake; }) flakes;
 
     # Configure auto-upgrade to support this flake. This doesn't enable
     # auto-upgrade, it only configures it.
