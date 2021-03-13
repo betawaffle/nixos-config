@@ -74,6 +74,9 @@
     evtest
     hid-listen
 
+    # Games
+    minecraft
+
     # This has something to do with warning messages.
     hicolor-icon-theme
 
