@@ -5,7 +5,7 @@
     ./efi.nix
     ./fonts.nix
     ./fs.nix
-    ./ipfs.nix
+    # ./ipfs.nix
     ./linux.nix
     ./misc.nix
     ./network.nix
