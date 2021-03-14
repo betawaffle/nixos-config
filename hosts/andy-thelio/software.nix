@@ -76,6 +76,7 @@
 
     # Games
     minecraft
+    dialog
 
     # This has something to do with warning messages.
     hicolor-icon-theme
