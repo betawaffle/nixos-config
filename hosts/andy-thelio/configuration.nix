@@ -42,15 +42,6 @@
   # Needed for zfs. It's just 8 random hex digits.
   networking.hostId = "6bd5a82e";
 
-  # NetworkManager is total garbage.
-  networking.networkmanager.enable = false;
-
-  # For Dyson Sphere Program
-  services.xserver.enable = true;
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.displayManager.gdm.wayland = false;
-  services.xserver.desktopManager.gnome3.enable = true;
-
   # This value determines the NixOS release from which the default settings for
   # stateful data, like file locations and database versions on your system
   # were taken.
