@@ -2,6 +2,7 @@
 {
   imports = [
     ./syncthing.nix
+    ./tailscale.nix
   ];
 
   # Make NeoVim the default editor, for the whole system.
