@@ -116,6 +116,7 @@
   services.blueman.enable = true;
 
   # Keybase
+  services.kbfs.enable = true;
   services.keybase.enable = true;
 
   # Lorri seems cool, let's try it.
