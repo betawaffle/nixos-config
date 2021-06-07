@@ -115,6 +115,9 @@
   # Bluetooth
   services.blueman.enable = true;
 
+  # Keybase
+  services.keybase.enable = true;
+
   # Lorri seems cool, let's try it.
   services.lorri.enable = true;
 
