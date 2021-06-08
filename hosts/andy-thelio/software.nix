@@ -46,6 +46,9 @@
     # The stupid content tracker.
     git
 
+    # Encryption for humans.
+    age
+
     # The programming languages I use.
     go
     zig
