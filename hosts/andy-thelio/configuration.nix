@@ -12,6 +12,7 @@
     ./nix.nix
     ./nixpkgs.nix
     ./nixpkgs-wayland.nix
+    ./rust.nix
     ./software.nix
     ./ssh.nix
     ./sway.nix
