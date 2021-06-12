@@ -11,6 +11,7 @@
     ./network.nix
     ./nix.nix
     ./nixpkgs.nix
+    ./nixpkgs-wayland.nix
     ./software.nix
     ./ssh.nix
     ./sway.nix

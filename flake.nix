@@ -11,6 +11,12 @@
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
+  inputs.rust-overlay = {
+    url = "github:oxalica/rust-overlay";
+
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
+
   # Use a newer version which added basic support for the G-shift mode,
   # meaning more buttons.
   #
