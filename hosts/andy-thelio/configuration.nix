@@ -11,7 +11,6 @@
     ./network.nix
     ./nix.nix
     ./nixpkgs.nix
-    ./nixpkgs-wayland.nix
     ./rust.nix
     ./software.nix
     ./ssh.nix
@@ -25,6 +24,9 @@
 
   # Ability to configure my Logitech G600 mouse.
   features.g600.enable = true;
+
+  # Turn on home-manager.
+  # features.home-manager.enable = true;
 
   # Enable Video4Linux, which I may use for screen-sharing.
   features.v4l2.enable = true;

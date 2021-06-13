@@ -1,13 +1,19 @@
-{ flakes, lib, ... }:
+{ flakes, lib, pkgs, ... }:
 {
-  imports = [
-    # We need flake support.
-    ./nix-unstable.nix
-  ];
-
   config = {
+    # Enable the nix command, flakes, and recursive nix.
+    nix.extraOptions = ''
+      experimental-features = nix-command flakes recursive-nix
+    '';
+
+    # Use the nixUnstable package.
+    nix.package = pkgs.nixUnstable;
+
     # Pin flakes to the ones used for building the system.
     nix.registry = lib.mapAttrs' (name: flake: { inherit name; value.flake = flake; }) flakes;
+
+    # Mark our system as supporting recursive nix.
+    nix.systemFeatures = [ "recursive-nix" ];
 
     # Configure auto-upgrade to support this flake. This doesn't enable
     # auto-upgrade, it only configures it.
