@@ -27,7 +27,7 @@
     flake = false;
   };
 
-  inputs.neovim-flake = {
+  inputs.neovim-contrib = {
     url = "github:neovim/neovim?dir=contrib";
 
     inputs.flake-utils.follows = "flake-utils";

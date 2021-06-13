@@ -83,7 +83,7 @@
         "type": "github"
       }
     },
-    "neovim-flake": {
+    "neovim-contrib": {
       "inputs": {
         "flake-utils": [
           "flake-utils"
@@ -151,7 +151,7 @@
         "home-manager": "home-manager",
         "libratbag": "libratbag",
         "mdloader": "mdloader",
-        "neovim-flake": "neovim-flake",
+        "neovim-contrib": "neovim-contrib",
         "nixpkgs": "nixpkgs",
         "nixpkgs-wayland": "nixpkgs-wayland",
         "rust-overlay": "rust-overlay"

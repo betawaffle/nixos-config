@@ -16,5 +16,7 @@
     '';
   };
 
-  neovim-unwrapped = inputs.neovim-flake.packages.${prev.system}.neovim;
+  neovim = final.callPackage ./packages/neovim.nix {};
+
+  neovim-unwrapped = inputs.neovim-contrib.packages.${prev.system}.neovim;
 }

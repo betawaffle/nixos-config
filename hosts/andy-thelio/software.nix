@@ -41,7 +41,7 @@
     # NeoVim, my editor of choice.
     #
     # The unwrapped one because I don't want the stuff NixOS normally adds.
-    neovim-unwrapped
+    neovim #-unwrapped
 
     # The stupid content tracker.
     git
