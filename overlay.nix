@@ -15,4 +15,6 @@
       mv build/* $out/bin/
     '';
   };
+
+  neovim-unwrapped = inputs.neovim-flake.packages.${prev.system}.neovim;
 }

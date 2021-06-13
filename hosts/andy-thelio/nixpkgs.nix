@@ -17,7 +17,6 @@
 
   # Overlay some packages.
   nixpkgs.overlays = [
-    flakes.neovim-nightly-overlay.overlay
     flakes.nixpkgs-wayland.overlay
     flakes.rust-overlay.overlay
 

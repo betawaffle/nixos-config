@@ -26,7 +26,7 @@
   features.g600.enable = true;
 
   # Turn on home-manager.
-  # features.home-manager.enable = true;
+  features.home-manager.enable = true;
 
   # Enable Video4Linux, which I may use for screen-sharing.
   features.v4l2.enable = true;

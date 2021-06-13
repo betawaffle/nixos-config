@@ -17,26 +17,38 @@ let
 
   defaultSystem = "x86_64-linux";
 
-  flakes = mapAttrs' renameSelf (filterAttrs onlyFlakes inputs);
-
+  # Evaluates the nixos configuration for a host.
   mkHost = { name, system ? defaultSystem, modules ? defaultModules name }: {
     inherit name;
     value = nixosSystem {
       inherit modules system;
-      extraModules = [
-        # Make input flakes available as an argument.
-        { _module.args.flakes = flakes; }
 
+      # These arguments need to be in `specialArgs` so they can be used in
+      # `imports`. If we used `_module.args` instead, such references would
+      # cause an infinite loop. I learned this the hard way.
+      specialArgs = {
+        # Separate flakes from non-flakes.
+        flakes = mapAttrs' renameSelf (filterAttrs onlyFlakes inputs);
+        inputs = filterAttrs onlyNonFlakes inputs;
+      };
+
+      extraModules = [
         # Use name as the default hostname.
         { networking.hostName = mkDefault name; }
       ];
     };
   };
 
+  # Builds an attribute set of evaluated nixos configurations from a list.
   mkHosts = list: listToAttrs (map mkHost list);
 
+  # Used to exclude non-flake inputs.
   onlyFlakes = name: value: if value ? flake then value.flake else true;
 
+  # Used to exclude flake inputs.
+  onlyNonFlakes = name: value: if value ? flake then !value.flake else false;
+
+  # Used to rename the `self` flake to `nixos-config`.
   renameSelf = name: value: {
     inherit value;
 

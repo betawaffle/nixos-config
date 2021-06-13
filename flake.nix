@@ -1,8 +1,14 @@
 {
   description = "Andy's NixOS Configurations";
 
+  inputs.flake-utils = {
+    url = "github:numtide/flake-utils";
+  };
+
   inputs.home-manager = {
     url = "github:nix-community/home-manager";
+
+    inputs.nixpkgs.follows = "nixpkgs";
   };
 
   # Use a newer version which added basic support for the G-shift mode,
@@ -21,8 +27,11 @@
     flake = false;
   };
 
-  inputs.neovim-nightly-overlay = {
-    url = "github:nix-community/neovim-nightly-overlay";
+  inputs.neovim-flake = {
+    url = "github:neovim/neovim?dir=contrib";
+
+    inputs.flake-utils.follows = "flake-utils";
+    inputs.nixpkgs.follows = "nixpkgs";
   };
 
   inputs.nixpkgs = {
@@ -38,6 +47,7 @@
   inputs.rust-overlay = {
     url = "github:oxalica/rust-overlay";
 
+    inputs.flake-utils.follows = "flake-utils";
     inputs.nixpkgs.follows = "nixpkgs";
   };
 

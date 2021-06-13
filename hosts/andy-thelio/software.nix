@@ -51,7 +51,7 @@
 
     # The programming languages I use.
     go
-    zig
+    zig zls
 
     # Caddy, for serving my web stuff, and Hugo, for generating the static
     # parts of it.
