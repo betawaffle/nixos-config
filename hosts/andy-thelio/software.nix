@@ -64,7 +64,7 @@
     # Blender, for 3D modeling.
     blender
 
-    # For debugging.
+    # For debugging and stuff.
     gdb
 
     # For accessing the serial console on my apu2e4.
