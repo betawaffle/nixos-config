@@ -43,10 +43,10 @@ let
   mkHosts = list: listToAttrs (map mkHost list);
 
   # Used to exclude non-flake inputs.
-  onlyFlakes = name: value: if value ? flake then value.flake else true;
+  onlyFlakes = name: value: value ? sourceInfo;
 
   # Used to exclude flake inputs.
-  onlyNonFlakes = name: value: if value ? flake then !value.flake else false;
+  onlyNonFlakes = name: value: !(value ? sourceInfo);
 
   # Used to rename the `self` flake to `nixos-config`.
   renameSelf = name: value: {
