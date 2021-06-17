@@ -78,6 +78,7 @@
     bluez
     evtest
     hid-listen
+    tmate
 
     # Games
     minecraft
