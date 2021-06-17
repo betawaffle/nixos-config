@@ -66,6 +66,7 @@
 
     # For debugging and stuff.
     gdb
+    bpftool
 
     # For accessing the serial console on my apu2e4.
     picocom
