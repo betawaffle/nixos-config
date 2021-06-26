@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ flakes, lib, ... }:
 {
   # Reduce space used by the nix store automatically.
   nix.autoOptimiseStore = true;
@@ -11,6 +11,6 @@
 
   # Needed for ngrok non-flakes stuff.
   nix.nixPath = lib.mkForce [
-    "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos-unstable"
+    "nixpkgs=${flakes.nixpkgs}"
   ];
 }
