@@ -19,4 +19,6 @@
   neovim = final.callPackage ./packages/neovim.nix {};
 
   neovim-unwrapped = inputs.neovim-contrib.packages.${prev.system}.neovim;
+
+  unload-iptables = final.callPackage ./packages/unload-iptables.nix {};
 }

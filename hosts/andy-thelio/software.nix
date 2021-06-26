@@ -96,6 +96,9 @@
     # Not sure what this is for at the moment.
     xdg_utils
 
+    # Custom stuff
+    unload-iptables
+
     # Other stuff I had installed before, but am not currently using:
     #
     # _1password chromium freecad kea jd jid jo
