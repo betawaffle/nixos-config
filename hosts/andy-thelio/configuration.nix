@@ -19,6 +19,9 @@
     ./users.nix
   ];
 
+  # Enable developer documentation (man, info, doc).
+  documentation.dev.enable = true;
+
   # Enable brightness control for DCC/CI monitors.
   features.ddcci.enable = true;
 

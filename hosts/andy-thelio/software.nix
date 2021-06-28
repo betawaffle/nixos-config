@@ -68,6 +68,9 @@
     gdb
     bpftool
 
+    # Moar man pages!
+    man-pages
+
     # For accessing the serial console on my apu2e4.
     picocom
 
