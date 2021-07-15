@@ -61,6 +61,9 @@
     # Firefox, but for Wayland.
     firefox-wayland
 
+    # Communication
+    zulip
+
     # Blender, for 3D modeling.
     blender
 
