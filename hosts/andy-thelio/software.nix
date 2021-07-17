@@ -35,6 +35,9 @@
     # PCI Utilities (for lspci and friends).
     pciutils
 
+    # Like Alfred, but for Linux.
+    albert
+
     # The kitty terminal emulator.
     kitty
 
