@@ -153,6 +153,26 @@
   # Lorri seems cool, let's try it.
   services.lorri.enable = true;
 
+  # PostgreSQL
+  services.postgresql.enable = true;
+  services.postgresql.package = pkgs.postgresql_13;
+  services.postgresql.ensureDatabases = [
+    "betawaffle"
+  ];
+  services.postgresql.ensureUsers = [
+    {
+      name = "betawaffle";
+      ensurePermissions = {
+        "DATABASE betawaffle" = "ALL PRIVILEGES";
+      };
+    }
+  ];
+  services.postgresql.settings = {
+    wal_level = "logical";
+    max_wal_senders = 10;
+    max_replication_slots = 10;
+  };
+
   # Not sure what this is for.
   services.upower.enable = true;
 }
