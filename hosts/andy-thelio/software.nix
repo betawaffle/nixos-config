@@ -67,9 +67,21 @@
     # Blender, for 3D modeling.
     blender
 
+    # Darktable, for photography stuff.
+    darktable
+
     # For debugging and stuff.
     gdb
     bpftool
+    iotop
+    hwloc
+    smartmontools
+
+    # OpenCL
+    clinfo
+
+    # NVMe
+    nvme-cli
 
     # Moar man pages!
     man-pages
@@ -100,6 +112,7 @@
     casync
     direnv
     flashrom
+    apcupsd
 
     # Not sure what this is for at the moment.
     xdg_utils
