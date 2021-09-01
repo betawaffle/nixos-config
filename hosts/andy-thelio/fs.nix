@@ -37,6 +37,20 @@ in
     "/home" = rpool "user/home";
     "/home/betawaffle" = rpool "user/home/betawaffle";
 
+    # Pictures on Mnemosyne.
+    "/mnt/pictures" = {
+      device = "192.168.0.8:/volume2/Pictures";
+      fsType = "nfs";
+
+      options = [
+        "ro"
+        "soft"
+        "bg"
+        "x-systemd.automount"
+        "noauto"
+      ];
+    };
+
     # The nix store and related state.
     "/nix" = rpool "local/nix";
 
