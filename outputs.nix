@@ -60,6 +60,7 @@ in
 {
   nixosConfigurations = mkHosts [
     { name = "andy-thelio"; }
+    { name = "moneta"; }
   ];
 
   overlay = final: prev: import ./overlay.nix {
