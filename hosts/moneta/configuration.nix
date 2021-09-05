@@ -4,18 +4,18 @@
     # (flakes.nixpkgs + "/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix")
   ];
 
-  boot.extraModulePackages = [];
   boot.kernelModules = [ "kvm-amd" ];
   boot.supportedFilesystems = [ "zfs" ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "mpt3sas" "usb_storage" "usbhid" "sd_mod" ];
-  boot.initrd.kernelModules = [];
   boot.initrd.postDeviceCommands = lib.mkAfter ''
     zfs rollback -r rpool/drop/root@blank
   '';
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+
+  boot.zfs.devNodes = "/dev/disk/by-vdev";
 
   environment.systemPackages = with pkgs; [
     efibootmgr
@@ -35,6 +35,52 @@
     unzip
     zip
   ];
+
+  # 1-1 = ZR52BWBP -- 2026-10-08
+  # 1-2 = ZR52CKKE -- 2026-10-08
+  # 1-3 = ZR52BWAC -- 2026-10-08
+  # 2-1 = ZR52BWCQ -- 2026-10-08
+  # 2-2 = ZR52CKY8 -- 2026-10-08
+  # 2-3 = ZR52CKWC -- 2026-10-08
+
+  environment.etc."zfs/vdev_id.conf".text = ''
+    alias SATA0   /dev/disk/by-path/pci-0000:42:00.2-ata-1
+    alias SATA1   /dev/disk/by-path/pci-0000:42:00.2-ata-2
+    alias SATA2   /dev/disk/by-path/pci-0000:42:00.2-ata-3
+    alias SATA3   /dev/disk/by-path/pci-0000:42:00.2-ata-4
+
+    alias 1-1     /dev/disk/by-path/pci-0000:61:00.0-sas-phy2-lun-0
+    alias 1-2     /dev/disk/by-path/pci-0000:61:00.0-sas-phy3-lun-0
+    alias 1-3     /dev/disk/by-path/pci-0000:61:00.0-sas-phy1-lun-0
+    alias 1-4     /dev/disk/by-path/pci-0000:61:00.0-sas-phy0-lun-0
+    alias 1-5     /dev/disk/by-path/pci-0000:61:00.0-sas-phy6-lun-0
+    alias 1-6     /dev/disk/by-path/pci-0000:61:00.0-sas-phy7-lun-0
+    alias 1-7     /dev/disk/by-path/pci-0000:61:00.0-sas-phy5-lun-0
+    alias 1-8     /dev/disk/by-path/pci-0000:61:00.0-sas-phy4-lun-0
+    alias 1-9     /dev/disk/by-path/pci-0000:61:00.0-sas-phy18-lun-0
+    alias 1-10    /dev/disk/by-path/pci-0000:61:00.0-sas-phy19-lun-0
+    alias 1-11    /dev/disk/by-path/pci-0000:61:00.0-sas-phy17-lun-0
+    alias 1-12    /dev/disk/by-path/pci-0000:61:00.0-sas-phy16-lun-0
+    alias 1-13    /dev/disk/by-path/pci-0000:61:00.0-sas-phy22-lun-0
+    alias 1-14    /dev/disk/by-path/pci-0000:61:00.0-sas-phy23-lun-0
+    alias 1-15    /dev/disk/by-path/pci-0000:61:00.0-sas-phy21-lun-0
+
+    alias 2-1     /dev/disk/by-path/pci-0000:23:00.0-sas-phy2-lun-0
+    alias 2-2     /dev/disk/by-path/pci-0000:23:00.0-sas-phy3-lun-0
+    alias 2-3     /dev/disk/by-path/pci-0000:23:00.0-sas-phy1-lun-0
+    alias 2-4     /dev/disk/by-path/pci-0000:23:00.0-sas-phy0-lun-0
+    alias 2-5     /dev/disk/by-path/pci-0000:23:00.0-sas-phy18-lun-0
+    alias 2-6     /dev/disk/by-path/pci-0000:23:00.0-sas-phy19-lun-0
+    alias 2-7     /dev/disk/by-path/pci-0000:23:00.0-sas-phy17-lun-0
+    alias 2-8     /dev/disk/by-path/pci-0000:23:00.0-sas-phy16-lun-0
+    alias 2-9     /dev/disk/by-path/pci-0000:23:00.0-sas-phy6-lun-0
+    alias 2-10    /dev/disk/by-path/pci-0000:23:00.0-sas-phy7-lun-0
+    alias 2-11    /dev/disk/by-path/pci-0000:23:00.0-sas-phy5-lun-0
+    alias 2-12    /dev/disk/by-path/pci-0000:23:00.0-sas-phy4-lun-0
+    alias 2-13    /dev/disk/by-path/pci-0000:23:00.0-sas-phy22-lun-0
+    alias 2-14    /dev/disk/by-path/pci-0000:23:00.0-sas-phy23-lun-0
+    alias 2-15    /dev/disk/by-path/pci-0000:23:00.0-sas-phy21-lun-0
+  '';
 
   fileSystems."/" = {
     device = "rpool/drop/root";
