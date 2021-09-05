@@ -122,27 +122,50 @@
   networking.interfaces.eno1.useDHCP = true;
   networking.interfaces.eno2.useDHCP = true;
 
-  # Enable the SSH server.
-  services.openssh.enable = true;
+  # Allow installing software with non-free licenses.
+  nixpkgs.config.allowUnfree = true;
 
-  # Use socket activation.
-  services.openssh.startWhenNeeded = true;
+  # UPS
+  services.apcupsd = {
+    enable = true;
+  };
 
-  # Don't open the firewall if not using the regular firewall.
-  services.openssh.openFirewall = config.networking.firewall.enable;
+  # SSH
+  services.openssh = {
+    # Enable the SSH server.
+    enable = true;
 
-  # Store SSH host keys in a persistent location.
-  services.openssh.hostKeys = [
-    {
-      path = "/var/lib/ssh/ssh_host_ed25519_key";
-      type = "ed25519";
-    }
-    {
-      path = "/var/lib/ssh/ssh_host_rsa_key";
-      type = "rsa";
-      bits = 4096;
-    }
-  ];
+    # Use socket activation.
+    startWhenNeeded = true;
+
+    # Don't open the firewall if not using the regular firewall.
+    openFirewall = config.networking.firewall.enable;
+
+    # Store SSH host keys in a persistent location.
+    hostKeys = [
+      {
+        path = "/var/lib/ssh/ssh_host_ed25519_key";
+        type = "ed25519";
+      }
+      {
+        path = "/var/lib/ssh/ssh_host_rsa_key";
+        type = "rsa";
+        bits = 4096;
+      }
+    ];
+  };
+
+  # Plex
+  services.plex = {
+    enable = true;
+
+    openFirewall = config.networking.firewall.enable;
+  };
+
+  # S.M.A.R.T.
+  services.smartd = {
+    enable = true;
+  };
 
   # This value determines the NixOS release from which the default settings for
   # stateful data, like file locations and database versions on your system
