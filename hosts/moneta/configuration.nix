@@ -115,6 +115,8 @@
 
   hardware.enableRedistributableFirmware = lib.mkDefault true;
 
+  networking.firewall.enable = false;
+
   # Needed for zfs. It's just 8 random hex digits.
   networking.hostId = "deadbeef";
 
@@ -129,6 +131,9 @@
   services.apcupsd = {
     enable = true;
   };
+
+  # NFS
+  services.nfs.server.enable = true;
 
   # SSH
   services.openssh = {
