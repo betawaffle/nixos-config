@@ -1,26 +1,37 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, sshPublicKeys, ... }:
 {
   imports = [
+    ../../modules/apc-ups.nix
+    ../../modules/common.nix
+    ../../modules/cpu/amd-epyc-7281.nix
+    ../../modules/efi.nix
+    ../../modules/nfs-server.nix
+    ../../modules/nix.nix
+    ../../modules/nixpkgs.nix
+    ../../modules/plex-server.nix
+    ../../modules/smart.nix
+    ../../modules/ssh-server.nix
+    ../../modules/zfs-root.nix
+    ../../modules/zfs-scrub.nix
+    ../../modules/zfs-trim.nix
   ];
 
-  boot.kernelModules = [ "kvm-amd" ];
-  boot.supportedFilesystems = [ "zfs" ];
+  boot.initrd.availableKernelModules = [ "mpt3sas" ];
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "mpt3sas" "usb_storage" "usbhid" "sd_mod" ];
+  common.espUUID = "7E30-68F1";
 
-  # Erase everything in the root filesystem on boot.
-  boot.initrd.postDeviceCommands = lib.mkAfter ''
-    zfs rollback -r rpool/drop/root@blank
-  '';
+  common.zfsRoot.datasets = {
+    # Needed for boot.
+    "/"    = "rpool/drop/root";
+    "/nix" = "rpool/keep/nix";
+    "/var" = "rpool/repl/var";
 
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-
-  # boot.zfs.devNodes = "/dev/disk/by-vdev";
+    # Currently mountpoint=legacy, but that may not be necessary.
+    "/home" = "rpool/repl/home";
+    "/root" = "rpool/repl/home/root";
+  };
 
   environment.systemPackages = with pkgs; [
-    efibootmgr
-    efivar
     parted
     gptfdisk
     ddrescue
@@ -28,13 +39,7 @@
     # Hardware-related tools.
     sdparm
     hdparm
-    smartmontools # for diagnosing hard disks
-    pciutils
     usbutils
-
-    # Some compression/archiver tools.
-    unzip
-    zip
   ];
 
   environment.etc."zfs/vdev_id.conf".text = ''
@@ -82,114 +87,25 @@
     alias 2-15    /dev/disk/by-path/pci-0000:23:00.0-sas-phy21-lun-0
   '';
 
-  fileSystems."/" = {
-    device = "rpool/drop/root";
-    fsType = "zfs";
-  };
-
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/7E30-68F1";
-    fsType = "vfat";
-  };
-
-  fileSystems."/home" = {
-    device = "rpool/repl/home";
-    fsType = "zfs";
-  };
-
-  fileSystems."/root" = {
-    device = "rpool/repl/home/root";
-    fsType = "zfs";
-  };
-
-  fileSystems."/nix" = {
-    device = "rpool/keep/nix";
-    fsType = "zfs";
-  };
-
-  fileSystems."/var" = {
-    device = "rpool/repl/var";
-    fsType = "zfs";
-  };
-
-  # TODO: Probably not needed. Check to see if we can remove this.
-  hardware.enableRedistributableFirmware = lib.mkDefault true;
-
   # Disable the firewall.
   networking.firewall.enable = false;
 
   # Needed for zfs. It's just 8 random hex digits.
   networking.hostId = "deadbeef";
 
-  # DHCP on interfaces, global is deprecated.
-  networking.useDHCP = false;
+  # DHCP on interfaces.
   networking.interfaces.eno1.useDHCP = true;
   networking.interfaces.eno2.useDHCP = true;
 
-  # Allow installing software with non-free licenses.
-  nixpkgs.config.allowUnfree = true;
-
-  # UPS Monitoring
-  services.apcupsd = {
-    enable = true;
-  };
-
-  # NFS Server
-  services.nfs.server.enable = true;
-
-  # SSH Server
-  services.openssh = {
-    # Enable the SSH server.
-    enable = true;
-
-    # Use socket activation.
-    startWhenNeeded = true;
-
-    # Don't open the firewall if not using the regular firewall.
-    openFirewall = config.networking.firewall.enable;
-
-    # Store SSH host keys in a persistent location.
-    hostKeys = [
-      {
-        path = "/var/lib/ssh/ssh_host_ed25519_key";
-        type = "ed25519";
-      }
-      {
-        path = "/var/lib/ssh/ssh_host_rsa_key";
-        type = "rsa";
-        bits = 4096;
-      }
-    ];
-  };
-
-  # Plex Server
-  services.plex = {
-    enable = true;
-
-    openFirewall = config.networking.firewall.enable;
-  };
-
-  # S.M.A.R.T. Monitoring
-  services.smartd = {
-    enable = true;
-  };
-
-  # This value determines the NixOS release from which the default settings for
-  # stateful data, like file locations and database versions on your system
-  # were taken.
-  #
-  # It's perfectly fine (and recommended) to leave this value at the release
-  # version of the first install of this system.
-  #
   # Before changing this value read the documentation for this option.
   system.stateVersion = "21.11";
 
-  # We're in the eastern timezone.
-  time.timeZone = "America/New_York";
+  # Completely declarative users.
+  users.mutableUsers = false;
 
   # Add ssh key(s) for root.
   users.users.root.openssh.authorizedKeys.keys = [
-    "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDBz210SJVEreBoHAp7abf5AV9vvRfbOURfCXnQwV/i6rsDmmNR1GSGyjoxn4CzwSK1Iv6spjDnaSDupypxeQmU2M1rF8Cxe/oiVaGhGvaAL0obKJp1ZjarPe8RQvILXvGtemwjyjgw+SZ+nXgXAoKxlD6WqMVg2J2H6FVyzEOq+Cffmw2Ipwaoyf3/Jw4hhOvYzB0Nrai25XVEajiBl/favaeqVTEYdkkePf1EIlYVbDbi8DC1/e4ADAajM/4i6H1z/iILHmNBkxXB5QteIXVyaF1powgVhCQF/3hC7VkFV8lCVZ1c52aSHqU0uQgJqJ7RL6LIU+44Zr9zeTE366WL betawaffle@gmail.com"
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN95WKGilabVF8xg9dthK/TKqZNdoIbUBD8XRyRADgnH betawaffle+thelio@gmail.com"
+    sshPublicKeys.andy-mac-pro
+    sshPublicKeys.andy-thelio
   ];
 }

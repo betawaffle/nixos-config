@@ -11,4 +11,8 @@
 
   # Enable pam-u2f module.
   security.pam.u2f.enable = true;
+
+  # Public-key auth only.
+  services.openssh.challengeResponseAuthentication = false;
+  services.openssh.passwordAuthentication = false;
 }

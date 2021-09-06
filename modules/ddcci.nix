@@ -2,32 +2,19 @@
 #
 # For brightness control.
 
-{ config, lib, pkgs, ... }:
-
-let
-  inherit (lib) mkEnableOption mkIf;
-
-  cfg = config.features.ddcci;
-in
-
+{ config, pkgs, ... }:
 {
-  options.features.ddcci = {
-    enable = mkEnableOption "DCC/CI";
-  };
+  # boot.extraModprobeConfig = ''
+  #   options ddcci
+  # '';
 
-  config = mkIf cfg.enable {
-    # boot.extraModprobeConfig = ''
-    #   options ddcci
-    # '';
+  boot.extraModulePackages = with config.boot.kernelPackages; [
+    ddcci-driver
+  ];
 
-    boot.extraModulePackages = with config.boot.kernelPackages; [
-      ddcci-driver
-    ];
+  # boot.kernelModules = [ "ddcci" "ddcci_backlight" ];
 
-    # boot.kernelModules = [ "ddcci" "ddcci_backlight" ];
-
-    environment.systemPackages = with pkgs; [
-      brightnessctl
-    ];
-  };
+  environment.systemPackages = with pkgs; [
+    brightnessctl
+  ];
 }

@@ -94,17 +94,6 @@ let
 in
 
 {
-  imports = [
-    # Use systemd-networkd, rather than ad-hoc scripts.
-    ./networkd.nix
-
-    # Use nftables, rather than iptables.
-    ./nftables.nix
-
-    # Configure (or disable) wireless networking.
-    ./wireless.nix
-  ];
-
   config = lib.mkMerge [
     # enp68s0
     (mkLink {

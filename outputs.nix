@@ -8,8 +8,8 @@ let
     # Some useful flake-specific stuff.
     ./modules/flakes.nix
 
-    # Load all the features modules.
-    ./modules/features.nix
+    # Pull in the sshPublicKeys module argument.
+    ./modules/ssh-public-keys.nix
 
     # The host's entrypoint module.
     (./hosts + "/${name}/configuration.nix")

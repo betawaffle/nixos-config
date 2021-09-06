@@ -1,9 +1,12 @@
+# AMD Radeon RX 5700 XT
 { pkgs, ... }:
 {
-  # I've got an AMD Radeon RX 5700 XT.
-
   # Make the kernel use the correct driver early.
   boot.initrd.kernelModules = [ "amdgpu" ];
+
+  environment.systemPackages = with pkgs; [
+    clinfo # OpenCL
+  ];
 
   # Not sure if these are necessary, but I added them.
   hardware.opengl.driSupport = true;
