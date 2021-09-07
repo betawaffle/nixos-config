@@ -87,6 +87,34 @@
     alias 2-15    /dev/disk/by-path/pci-0000:23:00.0-sas-phy21-lun-0
   '';
 
+  fileSystems."/mnt/mnemosyne-backups" = {
+    device = "192.168.0.8:/volume2/Backups";
+    fsType = "nfs";
+
+    options = [ "ro" "soft" "bg" "x-systemd.automount" "noauto" ];
+  };
+
+  fileSystems."/mnt/mnemosyne-media" = {
+    device = "192.168.0.8:/volume2/Media";
+    fsType = "nfs";
+
+    options = [ "ro" "soft" "bg" "x-systemd.automount" "noauto" ];
+  };
+
+  fileSystems."/mnt/mnemosyne-pictures" = {
+    device = "192.168.0.8:/volume2/Pictures";
+    fsType = "nfs";
+
+    options = [ "ro" "soft" "bg" "x-systemd.automount" "noauto" ];
+  };
+
+  fileSystems."/mnt/mnemosyne-time-machine" = {
+    device = "192.168.0.8:/volume2/Time Machine";
+    fsType = "nfs";
+
+    options = [ "ro" "soft" "bg" "x-systemd.automount" "noauto" ];
+  };
+
   # Disable the firewall.
   networking.firewall.enable = false;
 
