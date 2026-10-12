@@ -11,6 +11,9 @@ let
     # Pull in the sshPublicKeys module argument.
     ./modules/ssh-public-keys.nix
 
+    # Warn when the running config isn't pushed to GitHub.
+    ./modules/config-pushed.nix
+
     # The host's entrypoint module.
     (./hosts + "/${name}/configuration.nix")
   ];
