@@ -12,7 +12,7 @@
     ddcci-driver
   ];
 
-  # boot.kernelModules = [ "ddcci" "ddcci_backlight" ];
+  boot.kernelModules = [ "i2c_core" "backlight" "ddcci" "ddcci_backlight" ];
 
   environment.systemPackages = with pkgs; [
     brightnessctl

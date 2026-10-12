@@ -1,10 +1,14 @@
 { lib, pkgs, ... }:
 {
+  imports = [
+  ];
+
   # Kernel modules that might be needed by the initrd.
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" ];
 
   # Install things for all users.
   environment.systemPackages = with pkgs; [
+    btop
     curl
     file
     htop
@@ -16,7 +20,6 @@
     tcpdump
     unzip
     wget
-    wireguard
     wireguard-tools
     zip
   ];

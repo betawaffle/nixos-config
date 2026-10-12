@@ -1,35 +1,19 @@
 { pkgs, ... }:
 {
   environment.sessionVariables = {
-    XDG_SESSION_TYPE = "wayland";
-    XDG_CURRENT_DESKTOP = "sway";
+    # XDG_CURRENT_DESKTOP = "sway";
   };
 
   programs.sway.enable = true;
+  programs.sway.wrapperFeatures.gtk = true;
 
-  programs.sway.extraPackages = with pkgs; [
-    bemenu
-    grim
-    i3status # replace this?
-    # i3status-rust
-    libinput
-    libnotify
-    mako
-    nwg-launchers
-    slurp
-    swaybg
-    swayidle
-    swaylock
-    wf-recorder
-    wl-clipboard
+  # systemd.user.targets.sway-session = {
+  #   description = "Sway compositor session";
+  #   documentation = [ "man:systemd.special(7)" ];
+  #   bindsTo = [ "graphical-session.target" ];
+  #   wants = [ "graphical-session-pre.target" ];
+  #   after = [ "graphical-session-pre.target" ];
+  # };
 
-    # bemenu dmenu waybar
-  ];
-
-  services.pipewire.enable = true;
-
-  xdg.portal.enable = true;
-  xdg.portal.extraPortals = with pkgs; [
-    xdg-desktop-portal-wlr
-  ];
+  xdg.portal.wlr.enable = true;
 }

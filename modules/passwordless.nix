@@ -13,6 +13,6 @@
   security.pam.u2f.enable = true;
 
   # Public-key auth only.
-  services.openssh.challengeResponseAuthentication = false;
+  services.openssh.kbdInteractiveAuthentication = false;
   services.openssh.passwordAuthentication = false;
 }

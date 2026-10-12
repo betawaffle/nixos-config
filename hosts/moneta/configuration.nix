@@ -1,14 +1,17 @@
-{ config, lib, pkgs, sshPublicKeys, ... }:
+{ pkgs, sshPublicKeys, ... }:
 {
   imports = [
     ../../modules/apc-ups.nix
     ../../modules/common.nix
     ../../modules/cpu/amd-epyc-7281.nix
     ../../modules/efi.nix
+    # ../../modules/netbox.nix
     ../../modules/nfs-server.nix
     ../../modules/nix.nix
     ../../modules/nixpkgs.nix
     ../../modules/plex-server.nix
+    ../../modules/powertop.nix
+    # ../../modules/rdma.nix
     ../../modules/smart.nix
     ../../modules/ssh-server.nix
     ../../modules/zfs-root.nix
@@ -17,6 +20,10 @@
   ];
 
   boot.initrd.availableKernelModules = [ "mpt3sas" ];
+
+  boot.zfs.extraPools = [
+    "dpool"
+  ];
 
   common.espUUID = "7E30-68F1";
 

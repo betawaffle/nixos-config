@@ -30,6 +30,9 @@ let
         # Separate flakes from non-flakes.
         flakes = mapAttrs' renameSelf (filterAttrs onlyFlakes inputs);
         inputs = filterAttrs onlyNonFlakes inputs;
+
+        # Provide metadata about all of the hosts in this repo.
+        hosts = import ./hosts/meta.nix;
       };
 
       extraModules = [
@@ -63,8 +66,10 @@ in
     { name = "moneta"; }
   ];
 
-  overlay = final: prev: import ./overlay.nix {
-    inherit final prev inputs;
+  overlays.default = import ./overlay.nix inputs;
+
+  overlays.kernel-packages = final: prev: {
+    rapiddisk = final.callPackage ./packages/rapiddisk {};
   };
 
   /*

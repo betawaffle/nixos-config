@@ -28,7 +28,7 @@ let
       set splitbelow
       set splitright
       set switchbuf=useopen,usetab
-      set tabstop=2
+      set tabstop=4
       set textwidth=78
       set tildeop
       set timeoutlen=500
@@ -115,17 +115,15 @@ let
               buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
               buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
               buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-              buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+              buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
 
               require('completion').on_attach()
           end
 
-          local servers = {'zls'}
-          for _, lsp in ipairs(servers) do
-              lspconfig[lsp].setup {
-                  on_attach = on_attach,
-              }
-          end
+          lspconfig['zls'].setup {
+              on_attach = on_attach,
+          }
+          require('rust-tools').setup({})
       EOF
     '';
 
@@ -137,6 +135,7 @@ let
       nerdtree
       nvim-lspconfig
       nvim-treesitter
+      rust-tools-nvim
       typescript-vim
       vim-airline
       vim-go

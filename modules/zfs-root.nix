@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, ... }:
 
 let
   inherit (lib) mapAttrs mkAfter mkOption types;
@@ -32,6 +32,6 @@ in
     #
     # boot.zfs.forceImportRoot = false;
 
-    fileSystems = mapAttrs (name: value: { device = value; fsType = "zfs"; }) cfg.datasets;
+    fileSystems = mapAttrs (_: value: { device = value; fsType = "zfs"; }) cfg.datasets;
   };
 }

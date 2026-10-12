@@ -1,28 +1,31 @@
 { lib, pkgs, ... }:
 {
-  # A better console font?
-  console.font = lib.mkDefault "${pkgs.terminus_font}/share/consolefonts/ter-u28n.psf.gz";
-
-  fonts.enableDefaultFonts = false;
+  fonts.enableDefaultFonts = true;
 
   fonts.fonts = with pkgs; [
-    fira
-    fira-code
-    fira-code-symbols
+    #fira
+    #fira-code
+    #fira-code-symbols
 
     font-awesome
 
     inter
     inter-ui
 
-    iosevka
-    iosevka-bin
+    # iosevka-bin
+    # iosevka-bin-aile
+    # iosevka-bin-curly
+    # iosevka-bin-curly-slab
+    # iosevka-bin-etoile
+    # iosevka-bin-variants.slab
 
-    # nerdfonts
+    nerdfonts #.override { fonts = [ "Iosevka" ]; })
   ];
 
   fonts.fontconfig.defaultFonts = {
-    monospace = [ "Iosevka" ];
-    sansSerif = [ "Inter" ];
+    # monospace = [ "Iosevka Term Slab" "Iosevka" ];
+    # sansSerif = [ "Iosevka Aile" ];
+    # serif     = [ "Iosevka Etoile" ];
+    # emoji     = [];
   };
 }

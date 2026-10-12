@@ -2,8 +2,7 @@
 
 let
   inherit (lib) mkOption types;
-
-  espUUID = config.common.espUUID;
+  inherit (config.common) espUUID;
 in
 
 {

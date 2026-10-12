@@ -8,9 +8,9 @@
   hardware.cpu.amd.updateMicrocode = true;
 
   # Allow nix builds to use all 64 threads.
-  nix.buildCores = 64; # max parallelism of each build
-  nix.maxJobs    = 32; # max concurrent builds
+  nix.settings.cores    = 64; # max parallelism of each build
+  nix.settings.max-jobs = 32; # max concurrent builds
 
   # Tell nix it supports KVM and has lots of cores.
-  nix.systemFeatures = [ "kvm" "big-parallel" ];
+  nix.settings.system-features = [ "kvm" "big-parallel" ];
 }

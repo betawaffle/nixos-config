@@ -1,0 +1,21 @@
+diff --git a/Makefile b/Makefile
+index 52ec060..7589e6b 100644
+--- a/Makefile
++++ b/Makefile
+@@ -38,14 +38,12 @@ all:
+
+ install: all
+	$(MKDIR) $(DESTDIR)/lib/modules/$(KVER)/kernel/drivers/block/
+-	install -o root -g root -m 0755 rapiddisk.ko $(DESTDIR)/lib/modules/$(KVER)/kernel/drivers/block/
+-	install -o root -g root -m 0755 rapiddisk-cache.ko $(DESTDIR)/lib/modules/$(KVER)/kernel/drivers/block/
+-	depmod -a
++	install -m 0755 rapiddisk.ko $(DESTDIR)/lib/modules/$(KVER)/kernel/drivers/block/
++	install -m 0755 rapiddisk-cache.ko $(DESTDIR)/lib/modules/$(KVER)/kernel/drivers/block/
+
+ uninstall:
+	rm -f $(DESTDIR)/lib/modules/$(KVER)/kernel/drivers/block/rapiddisk.ko
+	rm -f $(DESTDIR)/lib/modules/$(KVER)/kernel/drivers/block/rapiddisk-cache.ko
+-	depmod -a
+
+ clean:
+	rm -rf *.o *.ko *.symvers *.mod.c .*.cmd Module.markers modules.order *.o.* built-in*

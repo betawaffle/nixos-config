@@ -1,6 +1,7 @@
 { pkgs, ... }:
 {
   environment.systemPackages = with pkgs; [
-    zig zls
+    zig # zig-master
+    zls-override
   ];
 }

@@ -1,19 +1,26 @@
-{ config, pkgs, sshPublicKeys, ... }:
+{ config, hosts, pkgs, ... }:
 {
   imports = [
+    ../../modules/agenix.nix
+    ../../modules/arduino.nix
     ../../modules/bluetooth.nix
-    ../../modules/bpf.nix
     ../../modules/common.nix
+    ../../modules/console.nix
     ../../modules/cpu/amd-threadripper-3970x.nix
     ../../modules/ddcci.nix
+    ../../modules/eda-tools.nix
     ../../modules/efi.nix
+    ../../modules/firecracker.nix
     ../../modules/fish.nix
     ../../modules/fonts.nix
     ../../modules/g600-mouse.nix
     ../../modules/games.nix
     ../../modules/gpu/amd-5700xt.nix
+    ../../modules/greetd.nix
+    ../../modules/gtk.nix
     ../../modules/home-manager.nix
     ../../modules/keybase.nix
+    ../../modules/mako.nix
     ../../modules/neovim.nix
     ../../modules/networkd.nix
     ../../modules/nftables.nix
@@ -22,28 +29,38 @@
     ../../modules/nvme.nix
     ../../modules/pam.nix
     ../../modules/passwordless.nix
+    ../../modules/powertop.nix
+    ../../modules/river.nix
     ../../modules/rust.nix
     ../../modules/sound.nix
     ../../modules/ssh-server.nix
-    ../../modules/sway.nix
     ../../modules/syncthing.nix
     ../../modules/tailscale.nix
     ../../modules/video4linux.nix
+    ../../modules/wayland.nix
+    ../../modules/wezterm.nix
+    ../../modules/xdg.nix
     ../../modules/zfs-root.nix
     ../../modules/zfs-scrub.nix
     ../../modules/zfs-trim.nix
     ../../modules/zig.nix
 
+    ../../modules/netbox.nix
+
+    #../../modules/bpf.nix
+    #../../modules/rdma.nix
     #../../modules/ipfs.nix
 
     ./network.nix
   ];
 
   # Use the latest linux kernel I can.
-  # boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = pkgs.zfsStable.latestCompatibleLinuxPackages;
+  # pkgs.linuxPackages_5_10; # pkgs.zfsStable.latestCompatibleLinuxPackages;
 
-  # More console output?
-  boot.loader.systemd-boot.consoleMode = "max";
+  boot.extraModulePackages = with config.boot.kernelPackages; [
+    rapiddisk
+  ];
 
   # Speed up booting slightly by not waiting at the menu.
   boot.loader.timeout = 1;
@@ -62,6 +79,10 @@
   # Enable developer documentation (man, info, doc).
   documentation.dev.enable = true;
 
+  environment.enableDebugInfo = true;
+
+  environment.etc."nixos/flake.nix".source = "/home/betawaffle/projects/nixos-config/flake.nix";
+
   # Install things for all users.
   environment.systemPackages = with pkgs; [
     age
@@ -72,7 +93,9 @@
     cachix
     caddy
     casync
+    cntr
     darktable
+    delta
     direnv
     dogdns
     evtest
@@ -82,7 +105,7 @@
     fzf
     gdb
     git
-    go
+    go_1_17
     hexyl
     hicolor-icon-theme
     hid-listen
@@ -90,15 +113,35 @@
     hwloc
     kitty
     lf
+    llvmPackages_13.libllvm
+    logiops
     man-pages
     mdloader
+    nix-direnv
     nix-index
+    obsidian
     picocom
+    radare2
     smartmontools
+    sqlite-interactive
     tmate
     unload-iptables
     xdg_utils
     zeal
+    zoxide
+
+    qmk-udev-rules
+    vial
+
+    river-updated
+
+    clang-tools
+    cmake
+
+    nbd
+    nvmet-cli
+    qemu
+    rustdesk
   ];
 
   # Pictures on Mnemosyne.
@@ -119,17 +162,18 @@
   # Ethernet is good enough for now.
   networking.wireless.enable = false;
 
+  services.mako.enable = true;
+  services.pipewire.enable = true;
+
   # Don't leave any processes running from logged-out sessions.
   services.logind.killUserProcesses = true;
 
-  # Lorri seems cool, let's try it.
-  services.lorri.enable = true;
-
   # PostgreSQL
   services.postgresql.enable = true;
-  services.postgresql.package = pkgs.postgresql_13;
+  services.postgresql.package = pkgs.postgresql_14;
   services.postgresql.ensureDatabases = [
     "betawaffle"
+    "tormem"
   ];
   services.postgresql.ensureUsers = [
     {
@@ -138,7 +182,20 @@
         "DATABASE betawaffle" = "ALL PRIVILEGES";
       };
     }
+    {
+      name = "tormem";
+      ensurePermissions = {
+        "DATABASE tormem" = "ALL PRIVILEGES";
+      };
+    }
   ];
+  services.postgresql.identMap = ''
+    tormem betawaffle tormem
+    tormem root       tormem
+  '';
+  services.postgresql.authentication = ''
+    local all tormem peer map=tormem
+  '';
   services.postgresql.settings = {
     wal_level = "logical";
     max_wal_senders = 10;
@@ -166,11 +223,12 @@
       "video"
       "wheel"   # for sudo
       "dialout" # for mdloader
+      "disk"
     ];
 
     # Allow me to SSH into this machine, from my other machine(s).
     openssh.authorizedKeys.keys = [
-      sshPublicKeys.andy-mac-pro
+      "ssh-ed25519 ${hosts.andy-mac-pro.ssh-public-keys.user.betawaffle.ed25519} betawaffle@andy-mac-pro"
     ];
   };
 
@@ -179,6 +237,6 @@
   # FIXME: I should reverse the direction of this, and build/deploy from here
   # to the router.
   users.users.root.openssh.authorizedKeys.keys = [
-    sshPublicKeys.router
+    "ssh-ed25519 ${hosts.router.ssh-public-keys.user.root.ed25519} root@router"
   ];
 }

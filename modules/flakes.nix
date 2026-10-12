@@ -13,7 +13,7 @@
     nix.registry = lib.mapAttrs' (name: flake: { inherit name; value.flake = flake; }) flakes;
 
     # Mark our system as supporting recursive nix.
-    nix.systemFeatures = [ "recursive-nix" ];
+    nix.settings.system-features = [ "recursive-nix" ];
 
     # Configure auto-upgrade to support this flake. This doesn't enable
     # auto-upgrade, it only configures it.
