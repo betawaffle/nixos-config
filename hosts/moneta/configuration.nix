@@ -5,6 +5,7 @@
     ../../modules/common.nix
     ../../modules/cpu/amd-epyc-7281.nix
     ../../modules/efi.nix
+    ../../modules/fallback-22.11.nix
     # ../../modules/netbox.nix
     ../../modules/nfs-server.nix
     ../../modules/nix.nix
@@ -121,6 +122,12 @@
 
     options = [ "ro" "soft" "bg" "x-systemd.automount" "noauto" ];
   };
+
+  # / is rolled back to a blank snapshot on every boot, so without this each
+  # boot gets a fresh machine-id and journald starts a new directory under
+  # /var/log/journal that it never vacuums. Pin it to the id from the first
+  # 26.11 boot so the current journal keeps being managed.
+  environment.etc."machine-id".text = "4f971679b493491a929fa11fc6197996\n";
 
   # Disable the firewall.
   networking.firewall.enable = false;
