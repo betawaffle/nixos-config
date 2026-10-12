@@ -97,15 +97,17 @@ restore.
    zfs create -o mountpoint=legacy rpool/keep/nix
    ```
 
-5. **Restore rpool/repl from dpool:**
+5. **Restore rpool/repl from dpool.** Only the children are replicated, so
+   create the parent first, then restore `var` and `home` (`home` brings
+   `home/root` along):
 
    ```sh
    zpool import -N -f dpool
-   zfs list -t snapshot -o name -s creation -r dpool/backups/moneta/repl | tail
-   snap=autosnap_…   # the newest snapshot of dpool/backups/moneta/repl itself
-   zfs send -R dpool/backups/moneta/repl@$snap | zfs recv -u rpool/repl
-   zfs set canmount=off rpool/repl
-   zfs set mountpoint=none rpool/repl
+   zfs create -o canmount=off -o mountpoint=none rpool/repl
+   for ds in var home; do
+     snap=$(zfs list -H -t snapshot -o name -s creation dpool/backups/moneta/repl/$ds | tail -1)
+     zfs send -R "$snap" | zfs recv -u rpool/repl/$ds
+   done
    for ds in var home home/root; do
      zfs set mountpoint=legacy rpool/repl/$ds
      zfs inherit readonly rpool/repl/$ds

@@ -46,9 +46,11 @@
     };
   };
 
-  # Replicate rpool/repl (/var, /home) to dpool using sanoid's snapshots. The
-  # parent dpool/backups/moneta is created by hand with readonly=on, so the
-  # replicas inherit it and can't diverge from what syncoid sends.
+  # Replicate rpool/repl (/var, /home) to dpool using sanoid's snapshots.
+  # Created by hand: dpool/backups/moneta (canmount=off, readonly=on) and
+  # dpool/backups/moneta/repl (canmount=off, mountpoint=none), so the replicas
+  # are never mounted and can't diverge from what syncoid sends. rpool/repl
+  # itself holds no data, so only its children are sent.
   services.syncoid = {
     enable = true;
     interval = "hourly";
@@ -57,6 +59,7 @@
     commands."rpool/repl" = {
       target = "dpool/backups/moneta/repl";
       recursive = true;
+      extraArgs = [ "--skip-parent" ];
     };
   };
 
