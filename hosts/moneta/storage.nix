@@ -6,6 +6,12 @@
 # on dpool or is replicated there.
 { pkgs, ... }:
 {
+  # The rpool SSDs (onboard SATA1/SATA2 = ata2/ata3) have logged link resets
+  # and UDMA CRC errors on writes since 2021, and the kernel already drops
+  # ata3 to 3.0 Gbps after a few resets on most boots. Start both at 3.0 Gbps,
+  # which is still faster than these SSDs can sustain.
+  boot.kernelParams = [ "libata.force=2:3.0G,3:3.0G" ];
+
   # Plex's database and metadata live on dpool rather than rpool.
   fileSystems."/var/lib/plex" = {
     device = "dpool/plex";

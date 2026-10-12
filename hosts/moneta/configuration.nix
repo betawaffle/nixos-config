@@ -101,28 +101,28 @@
     device = "192.168.0.8:/volume2/Backups";
     fsType = "nfs";
 
-    options = [ "ro" "soft" "bg" "x-systemd.automount" "noauto" ];
+    options = [ "ro" "soft" "bg" "x-systemd.automount" "noauto" "x-systemd.mount-timeout=15s" "x-systemd.idle-timeout=10min" ];
   };
 
   fileSystems."/mnt/mnemosyne-media" = {
     device = "192.168.0.8:/volume2/Media";
     fsType = "nfs";
 
-    options = [ "ro" "soft" "bg" "x-systemd.automount" "noauto" ];
+    options = [ "ro" "soft" "bg" "x-systemd.automount" "noauto" "x-systemd.mount-timeout=15s" "x-systemd.idle-timeout=10min" ];
   };
 
   fileSystems."/mnt/mnemosyne-pictures" = {
     device = "192.168.0.8:/volume2/Pictures";
     fsType = "nfs";
 
-    options = [ "ro" "soft" "bg" "x-systemd.automount" "noauto" ];
+    options = [ "ro" "soft" "bg" "x-systemd.automount" "noauto" "x-systemd.mount-timeout=15s" "x-systemd.idle-timeout=10min" ];
   };
 
   fileSystems."/mnt/mnemosyne-time-machine" = {
     device = "192.168.0.8:/volume2/Time Machine";
     fsType = "nfs";
 
-    options = [ "ro" "soft" "bg" "x-systemd.automount" "noauto" ];
+    options = [ "ro" "soft" "bg" "x-systemd.automount" "noauto" "x-systemd.mount-timeout=15s" "x-systemd.idle-timeout=10min" ];
   };
 
   # / is rolled back to a blank snapshot on every boot, so without this each

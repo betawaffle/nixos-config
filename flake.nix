@@ -114,10 +114,9 @@
 
   inputs.zig-overlay = {
     type = "github";
-    owner = "arqv";
+    owner = "mitchellh";
     repo = "zig-overlay";
 
-    inputs.flake-utils.follows = "flake-utils";
     inputs.nixpkgs.follows = "nixpkgs";
   };
 

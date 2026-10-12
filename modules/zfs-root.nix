@@ -42,12 +42,9 @@ in
 
     boot.supportedFilesystems = [ "zfs" ];
 
-    # Keep the old behaviour explicitly. The docs recommend false (the default
-    # from 26.11), but flipping it can leave the box unbootable if the pool
-    # wasn't cleanly exported, so do that separately from the upgrade.
-    #
-    # TODO: Switch to false once the upgraded system has booted cleanly.
-    boot.zfs.forceImportRoot = true;
+    # Don't force-import the root pool, as the docs recommend. This relies on
+    # networking.hostId matching the hostid recorded in the pool.
+    boot.zfs.forceImportRoot = false;
 
     fileSystems = mapAttrs (_: value: { device = value; fsType = "zfs"; }) cfg.datasets;
   };
