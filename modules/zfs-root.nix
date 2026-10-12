@@ -1,13 +1,15 @@
 { config, lib, ... }:
 
 let
-  inherit (lib) mapAttrs mkAfter mkOption types;
+  inherit (lib) head mapAttrs mkAfter mkIf mkOption splitString types;
 
   cfg = config.common.zfsRoot;
 
   rootDataset = cfg.datasets."/";
 
   rootSnapshot = "blank";
+
+  rootPool = head (splitString "/" rootDataset);
 in
 
 {
@@ -22,15 +24,30 @@ in
 
   config = {
     # Erase everything in the root filesystem on boot.
-    boot.initrd.postDeviceCommands = mkAfter ''
+    boot.initrd.postDeviceCommands = mkIf (!config.boot.initrd.systemd.enable) (mkAfter ''
       zfs rollback -r ${rootDataset}@${rootSnapshot}
-    '';
+    '');
+
+    # Same thing for the systemd-based initrd (the default since NixOS 25.11):
+    # roll back after the pool is imported, before the root is mounted.
+    boot.initrd.systemd.services.zfs-rollback-root = mkIf config.boot.initrd.systemd.enable {
+      description = "Roll back ${rootDataset} to @${rootSnapshot}";
+      wantedBy = [ "initrd.target" ];
+      after = [ "zfs-import-${rootPool}.service" ];
+      before = [ "sysroot.mount" ];
+      unitConfig.DefaultDependencies = "no";
+      serviceConfig.Type = "oneshot";
+      script = "zfs rollback -r ${rootDataset}@${rootSnapshot}";
+    };
 
     boot.supportedFilesystems = [ "zfs" ];
 
-    # TODO: Use this, since the docs recommended disabling force import.
+    # Keep the old behaviour explicitly. The docs recommend false (the default
+    # from 26.11), but flipping it can leave the box unbootable if the pool
+    # wasn't cleanly exported, so do that separately from the upgrade.
     #
-    # boot.zfs.forceImportRoot = false;
+    # TODO: Switch to false once the upgraded system has booted cleanly.
+    boot.zfs.forceImportRoot = true;
 
     fileSystems = mapAttrs (_: value: { device = value; fsType = "zfs"; }) cfg.datasets;
   };
