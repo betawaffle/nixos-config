@@ -92,4 +92,20 @@
     ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="0557", ATTR{idProduct}=="2419", ATTR{power/control}="on"
     ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="0557", ATTR{idProduct}=="7000", ATTR{power/control}="on"
   '';
+
+  # powertop --auto-tune (modules/powertop.nix) runs after udev at boot and
+  # puts every USB device back into autosuspend, so re-apply it afterwards.
+  systemd.services.bmc-usb-no-autosuspend = {
+    description = "Keep the BMC's virtual USB keyboard out of autosuspend";
+    after = [ "powertop.service" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig.Type = "oneshot";
+    script = ''
+      for d in /sys/bus/usb/devices/*; do
+        if [ "$(cat "$d/idVendor" 2>/dev/null)" = 0557 ]; then
+          echo on > "$d/power/control"
+        fi
+      done
+    '';
+  };
 }
