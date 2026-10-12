@@ -18,6 +18,8 @@
     ../../modules/zfs-root.nix
     ../../modules/zfs-scrub.nix
     ../../modules/zfs-trim.nix
+
+    ./storage.nix
   ];
 
   boot.initrd.availableKernelModules = [ "mpt3sas" ];
