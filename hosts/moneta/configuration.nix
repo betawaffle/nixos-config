@@ -15,6 +15,7 @@
     # ../../modules/rdma.nix
     ../../modules/smart.nix
     ../../modules/ssh-server.nix
+    ../../modules/tailscale.nix
     ../../modules/zfs-root.nix
     ../../modules/zfs-scrub.nix
     ../../modules/zfs-trim.nix
