@@ -4,7 +4,16 @@
 # and the small amount of state in rpool/repl (/var, /home). Those SATA links
 # have thrown CRC errors since day one, so anything that matters either lives
 # on dpool or is replicated there.
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
+
+let
+  # The Framework box's backup key (root's /root/.ssh/moneta_backup.pub there).
+  # PLACEHOLDER: empty until the box generates it.
+  frameworkBackupKeys = [
+    # "ssh-ed25519 AAAA... root@framework"
+  ];
+in
+
 {
   # The rpool SSDs (onboard SATA1/SATA2 = ata2/ata3) have logged link resets
   # and UDMA CRC errors on writes since 2021, and the kernel already drops
@@ -50,7 +59,75 @@
       daily = 60;
       monthly = 12;
     };
+
+    # Nightly rsync of the Framework box; one snapshot a day is enough.
+    datasets."dpool/backups/framework" = {
+      autosnap = true;
+      autoprune = true;
+      hourly = 0;
+      daily = 14;
+      weekly = 8;
+      monthly = 12;
+    };
+
+    datasets."dpool/lab" = {
+      autosnap = true;
+      autoprune = true;
+      hourly = 24;
+      daily = 7;
+    };
   };
+
+  # Backups of the Framework box (192.168.1.79), pushed nightly over SSH with
+  # rsync --fake-super, so owners and modes are kept in xattrs.
+  #
+  # Created by hand:
+  #
+  #   zfs create -o quota=200G -o xattr=sa dpool/backups/framework
+  #
+  # It inherits compression=zstd and mounts at /srv/backups/framework.
+  #
+  # The box must push with -M--fake-super so the flag reaches moneta's side;
+  # a plain --fake-super only affects the sending side, and the unprivileged
+  # receiver would silently drop owners, groups and device files.
+  users.users.framework-backup = {
+    isSystemUser = true;
+    group = "framework-backup";
+
+    # Pinned so the backup tree's ownership survives losing /var/lib/nixos.
+    uid = 900;
+
+    # sshd runs the forced command through the login shell.
+    useDefaultShell = true;
+
+    # Only rsync, and only inside the backup dataset.
+    openssh.authorizedKeys.keys = map
+      (key: ''command="${pkgs.rrsync}/bin/rrsync /srv/backups/framework",restrict ${key}'')
+      frameworkBackupKeys;
+  };
+
+  # Pinned to match the uid above.
+  users.groups.framework-backup.gid = 900;
+
+  warnings = lib.optional (frameworkBackupKeys == [ ])
+    "framework-backup has no authorized key yet; add the Framework box's /root/.ssh/moneta_backup.pub to frameworkBackupKeys in hosts/moneta/storage.nix.";
+
+  # Shared folder for the Framework box (and later the Mac), exported over NFS
+  # to the LAN. Every client is squashed to 1000:1000, which owns the tree.
+  #
+  # Created by hand:
+  #
+  #   zfs create -o recordsize=1M -o quota=1T dpool/lab
+  #   zfs set sharenfs='rw=@192.168.0.0/23,insecure,all_squash,anonuid=1000,anongid=1000,crossmnt' dpool/lab
+  #
+  # It inherits compression=lz4 and mounts at /srv/lab. "insecure" lets macOS
+  # mount it from an unprivileged port.
+  systemd.tmpfiles.rules = [
+    # "z" only fixes up ownership and mode; it won't create the directory if
+    # the dataset isn't mounted.
+    "z /srv/backups/framework 0750 framework-backup framework-backup -"
+    "z /srv/lab 0755 1000 1000 -"
+  ];
 
   # Replicate rpool/repl (/var, /home) to dpool using sanoid's snapshots.
   # Created by hand: dpool/backups/moneta (canmount=off, readonly=on) and
