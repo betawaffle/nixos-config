@@ -8,9 +8,8 @@
 
 let
   # The Framework box's backup key (root's /root/.ssh/moneta_backup.pub there).
-  # PLACEHOLDER: empty until the box generates it.
   frameworkBackupKeys = [
-    # "ssh-ed25519 AAAA... root@framework"
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA0ykeiwH3aj2dZd7J4iXYRoT5aCWO/ZzQos/EzInBGE root@framework"
   ];
 in
 
